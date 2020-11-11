@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Editor from "./components/Editor";
+import useLocalStorage from './hooks/useLocalStorage'
 
 function App() {
-    const [html, setHtml] = useState("");
-    const [css, setCss] = useState("");
-    const [javascript, setJavascript] = useState("");
+    const [html, setHtml] = useLocalStorage("html", "");
+    const [css, setCss] = useLocalStorage("css", "");
+    const [js, setJs] = useLocalStorage("js", "");
     const [srcDoc, setSrcDoc] = useState("");
 
     useEffect(() => {
@@ -13,12 +14,12 @@ function App() {
             <html>
                 <body>${html}</body>
                 <style>${css}</style>
-                <script>${javascript}</script>
+                <script>${js}</script>
             </html>
         `)
         }, 250);
         return () => clearTimeout(timeout);
-    }, [html, css, javascript]);
+    }, [html, css, js]);
 
     return (
         <>
@@ -38,8 +39,8 @@ function App() {
                 <Editor
                     language="javascript"
                     displayName="JS"
-                    value={javascript}
-                    onChange={setJavascript}
+                    value={js}
+                    onChange={setJs}
                 />
             </div>
             <div className="pane">

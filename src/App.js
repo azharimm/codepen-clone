@@ -1,10 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Editor from "./components/Editor";
 
 function App() {
     const [html, setHtml] = useState("");
     const [css, setCss] = useState("");
     const [javascript, setJavascript] = useState("");
+    const [srcDoc, setSrcDoc] = useState("");
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setSrcDoc (`
+            <html>
+                <body>${html}</body>
+                <style>${css}</style>
+                <script>${javascript}</script>
+            </html>
+        `)
+        }, 250);
+        return () => clearTimeout(timeout);
+    }, [html, css, javascript]);
+
     return (
         <>
             <div className="pane top-pane">
@@ -22,13 +37,14 @@ function App() {
                 />
                 <Editor
                     language="javascript"
-                    displayName="Javascript"
+                    displayName="JS"
                     value={javascript}
                     onChange={setJavascript}
                 />
             </div>
             <div className="pane">
                 <iframe
+                    srcDoc={srcDoc}
                     title="output"
                     sandbox="allow-scripts"
                     frameBorder="0"
